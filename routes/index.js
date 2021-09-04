@@ -16,12 +16,14 @@ router.get('/register', (req, res, next) => {
 });
 
 router.post('/register', (req, res, next) => {
+  let name = req.body.name || '';
   const { username, password } = req.body;
   bcryptjs
     .hash(password, 8)
     .then((passwordHashAndSalt) => {
       console.log(passwordHashAndSalt);
       return User.create({
+        name,
         username,
         passwordHashAndSalt
       }).then((user) => {

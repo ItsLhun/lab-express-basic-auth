@@ -7,10 +7,15 @@
     <nav>
       <a href='/'>Home</a>
       {{#if user}}
-        <form action='/log-out' method='POST'><button>Log Out</button></form>
+        <div class='helper-form'>
+          <form action='/log-out' method='POST'><button>Log Out</button></form>
+          <a href='/profile'>My Profile</a>
+        </div>
       {{else}}
-        <a href='/log-in'>Log In</a>
-        <a href='/register'>Sign Up</a>
+        <div>
+          <a href='/log-in'>Log In</a>
+          <a href='/register'>Sign Up</a>
+        </div>
       {{/if}}
     </nav>
     {{{body}}}

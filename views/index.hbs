@@ -1,1 +1,14 @@
-<h1>Hello World</h1>
+{{#if user}}
+  {{#if user.name}}
+    <h1>Hello {{user.name}}</h1>
+  {{else}}
+    <h1>Hello user</h1>
+  {{/if}}
+  <p>Click the following links to access your private amazing pictures: </p>
+  <a href='/main'>Cute cat picture</a>
+  <a href='/private'>Dancing cat</a>
+
+{{else}}
+  <h1>Welcome!</h1>
+  <h2>Please sign up to see the most amazing pictures of cats</h2>
+{{/if}}
