@@ -4,6 +4,10 @@ const createError = require('http-errors');
 const logger = require('morgan');
 const sassMiddleware = require('node-sass-middleware');
 const serveFavicon = require('serve-favicon');
+const expressSession = require('express-session');
+const MongoStore = require('connect-mongo');
+
+const userDeserializer = require('./middleware/user-deserializer');
 
 const indexRouter = require('./routes/index');
 
@@ -22,11 +26,28 @@ app.use(
   sassMiddleware({
     src: join(__dirname, 'public'),
     dest: join(__dirname, 'public'),
-    outputStyle: process.env.NODE_ENV === 'development' ? 'nested' : 'compressed',
+    outputStyle:
+      process.env.NODE_ENV === 'development' ? 'nested' : 'compressed',
     force: process.env.NODE_ENV === 'development',
     sourceMap: true
   })
 );
+
+app.use(
+  expressSession({
+    secret: process.env.SESSION_SECRET,
+    saveUninitialized: true,
+    cookie: {
+      maxAge: 15 * 24 * 60 * 60 * 1000
+    },
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGODB_URI,
+      ttl: 60 * 60 //time to live, number of seconds the session is kept alive
+    })
+  })
+);
+
+app.use(userDeserializer);
 
 app.use('/', indexRouter);
 
